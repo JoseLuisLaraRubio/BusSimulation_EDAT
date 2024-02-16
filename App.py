@@ -18,10 +18,12 @@ b3 = Bus(initTime = 0, lapCount = 7, startingPos = 6, name = "C")
 b4 = Bus(initTime = 0, lapCount = 1, startingPos = 3, name = "D")
 b5 = Bus(initTime = 0, lapCount = 4, startingPos = 1, name = "E")
 b6 = Bus(initTime = 0, lapCount = 9, startingPos = 4, name = "F")
+b7 = Bus(initTime = 0, lapCount = 2, startingPos = 9, name = "G")
+b8 = Bus(initTime = 0, lapCount = 8, startingPos = 5, name = "H")
+b9 = Bus(initTime = 0, lapCount = 6, startingPos = 7, name = "I")
 
-busses = [b1, b2, b3, b4, b5, b6]
+busses = [b1, b2, b3, b4, b5, b6, b7, b8, b9]
 
-#player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 BM = BusManager(busses = busses)
 DM = DrawManager(BusManager = BM, screen = screen)
 
@@ -38,16 +40,17 @@ while running:
     #Draw Background
     DM.DrawBGObjects()
 
-    #Update positions
-    BM.UpdateBussesPos(dt)
-    BM.UpdateList()
-
     #Draw busses
     DM.DrawBussesSimulation(BM._busses)
     DM.DrawBussesList(BM._busses)
 
+    if(BM._simulationActive):
+        #Update positions
+        BM.UpdateBussesPos(dt)
+        BM.UpdateList()
+
     #Draw Misc
-    pygame.draw.line(screen, "Black", [940, 300], [960, 300])
+
 
     # flip() the display to put your work on screen
     pygame.display.flip()

@@ -5,8 +5,18 @@ class BusManager():
         self._simulDuration = 3
         self._timeUnit = 10
         self._circuitLenght = 10
+        self._elapsedTime = 0
+
+        self._simulationActive = True
+        #self._simulationActive = False
+
+    def startSimulation(self):
+        self._simulationActive = True
 
     def UpdateBussesPos(self, dt):
+
+        self._elapsedTime += dt
+
         for bus in self._busses:
             #if bus._isActive:
             busSpeed =  ((bus._lapCount * self._nodeCount - bus._startingPos) / 
@@ -40,4 +50,6 @@ class BusManager():
     def ReadBussesinfo():
         pass
 
+    def PrintResults():
+        pass
         
