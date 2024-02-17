@@ -11,7 +11,7 @@ class BusManager():
 
         self._nodeCount = 6
         self._simulDuration = self._endTime - self._initTime
-        self._timeUnit = 1
+        self._timeUnit = 10
         self._circuitLenght = 10
         self._elapsedTime = 0
 
@@ -40,15 +40,15 @@ class BusManager():
             self._simulationFinished = False
             self._elapsedTime = 0
             
-        actual = self._busses.inicio
-        while True:
-            bus = actual.dato
-            bus._position = bus._startingPos
-            if(actual == self._busses.ultimo):
-                break 
-            actual = actual.siguiente
+            actual = self._busses.inicio
+            while True:
+                bus = actual.dato
+                bus._position = bus._startingPos
+                if(actual == self._busses.ultimo):
+                    break 
+                actual = actual.siguiente
 
-        self._simulationActive = True
+            self._simulationActive = True
 
     def SaveInitialPositions(self)->list:
         for bus in self._busses:
