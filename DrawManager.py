@@ -1,4 +1,5 @@
 import pygame
+from Button import Button as btn
 
 class DrawManager():
     def __init__(self, BusManager, screen):
@@ -18,15 +19,11 @@ class DrawManager():
     def DrawBGObjects(self):
         #Load Sprites
         roadSprite = self.getImage(pygame.image.load("Assets/Road.png"), 650, 650)
-        playButtonSprite = self.getImage(pygame.image.load("Assets/PlayButton.png"), 130, 130)
-        pauseButtonSprite = self.getImage(pygame.image.load("Assets/PauseButton.png"), 75, 75)
         listSign = self.getImage(pygame.image.load("Assets/ListSign.png"), 130, 75)
         timeSign = self.getImage(pygame.image.load("Assets/TimeSign.png"), 130, 75)
 
         #Draw Sprites
         self._screen.blit(roadSprite, (self._screen.get_width() / 2 - 325, self._screen.get_height() / 2 - 325))
-        self._screen.blit(playButtonSprite, (1070, 310))
-        self._screen.blit(pauseButtonSprite, (1085, 460))
         self._screen.blit(listSign, (80, 50))
         self._screen.blit(timeSign, (1055, 50))
         
@@ -55,9 +52,5 @@ class DrawManager():
             self._screen.blit(self.GetColoredBus(bus, 700 / len(busses), (700 * 3) / (len(busses) * 5)), (85, y))
             y += (700 * 3) / (len(busses) * 5) + 10
 
-    def DrawBussesDebug(self, busses):
-        offset = 0
-        for bus in busses:
-            pygame.draw.circle(self._screen, bus._color,[100 + offset, bus._position * 100 + 30], 30)
-            offset += 100
 
+        

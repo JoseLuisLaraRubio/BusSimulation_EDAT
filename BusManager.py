@@ -1,5 +1,6 @@
 class BusManager():
     def __init__(self, busses):
+        
         self._busses = busses
         self._nodeCount = 6
         self._simulDuration = 3
@@ -7,14 +8,23 @@ class BusManager():
         self._circuitLenght = 10
         self._elapsedTime = 0
 
-        self._simulationActive = True
-        #self._simulationActive = False
+        self._simulationFinished = False
 
-    def startSimulation(self):
-        self._simulationActive = True
+        self._simulationActive = False
+
+    def LimitSimulationTime(self):
+        if (self._elapsedTime >= self._simulDuration * self._timeUnit):
+            self.PauseSimulation()
+            self._simulationFinished = True
+
+    def StartSimulation(self):
+        if not self._simulationFinished:
+            self._simulationActive = True
+    
+    def PauseSimulation(self):
+        self._simulationActive = False
 
     def UpdateBussesPos(self, dt):
-
         self._elapsedTime += dt
 
         for bus in self._busses:
@@ -37,7 +47,7 @@ class BusManager():
             next = self._busses[nextIndex]
 
             if(current._position > next._position):
-                self.NotifyPosChange(current, next)
+                #self.NotifyPosChange(current, next)
                 temp = current
                 self._busses[i] = self._busses[nextIndex]
                 self._busses[nextIndex] = temp
