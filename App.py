@@ -4,10 +4,13 @@ from Bus import Bus
 from Button import Button
 from BusManager import BusManager
 from DrawManager import DrawManager
+from FileReader import FileReader
 
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
+Reader = FileReader("BusesInfo.csv")
+Reader.readFile()
 clock = pygame.time.Clock()
 running = True
 dt = 0
@@ -23,16 +26,20 @@ b7 = Bus(initTime = 0, lapCount = 2, startingPos = 5, name = "G")
 b8 = Bus(initTime = 0, lapCount = 8, startingPos = 6, name = "H")
 b9 = Bus(initTime = 0, lapCount = 6, startingPos = 3, name = "I")
 
-busses = [b1, b2, b3, b4, b5, b6, b7, b8, b9]
+#Returns list of buses
+busses = Reader.getData()
 
 BM = BusManager(busses = busses)
 DM = DrawManager(BusManager = BM, screen = screen)
 
 playButtonSprite = pygame.image.load("Assets/PlayButton.png")
 pauseButtonSprite = pygame.image.load("Assets/PauseButton.png")
+restartButtonSprite = pygame.image.load("Assets/RestartButton.svg")
+
 
 playButton = Button(1070, 310, playButtonSprite, .3, screen)
 pauseButton = Button(1085, 470, pauseButtonSprite, .3, screen)
+RestartButton = Button(1005, 430, restartButtonSprite, .3, screen)
 
 while running:
     # poll for events
@@ -53,6 +60,9 @@ while running:
 
     if(pauseButton.draw()):
         BM.PauseSimulation()
+
+    if(RestartButton.draw()):
+        BM.RestartSimulation()
 
     #Draw busses
     DM.DrawBussesSimulation(BM._busses)
