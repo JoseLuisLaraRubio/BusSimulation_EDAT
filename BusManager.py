@@ -61,8 +61,7 @@ class BusManager():
         while True:
             bus = actual.dato
             #if bus._isActive:
-            busSpeed =  ((bus._lapCount * self._nodeCount - bus._startingPos) / 
-                         (self._simulDuration * self._timeUnit))  * dt
+        busSpeed =  ((bus._lapCount * self._nodeCount - bus._startingPos) / ((self._simulDuration * self._timeUnit)-(bus._initTime*self._timeUnit))  * dt)
             
             bus._position += busSpeed
             if(bus._position >= self._nodeCount):
