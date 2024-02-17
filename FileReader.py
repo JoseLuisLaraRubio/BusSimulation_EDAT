@@ -1,4 +1,3 @@
-
 from Bus import Bus
 
 class FileReader():
@@ -9,19 +8,19 @@ class FileReader():
 
     def readFile(self):
         arr = []
-        color = []
         for line in self.file:
+            color = []
             arr = line.split(",")
             time = int(arr[0]) 
             laps = int(arr[1])
             position = int(arr[2])
             name = str(arr[3])
-            """
-            color.append(arr[4])
-            color.append(arr[5])
-            color.append(arr[6])
-            """
-            self.buses.append(Bus(time,laps,position,name))#,color)
+    
+            color.append(int(arr[4]))
+            color.append(int(arr[5]))
+            color.append(int(arr[6].strip("\n")))
+        
+            self.buses.append(Bus(time,laps,position,name,color))#,color)
         
     def getData(self)->list:
         return self.buses
