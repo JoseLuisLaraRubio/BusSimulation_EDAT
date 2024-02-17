@@ -2,7 +2,7 @@ import math
 import numpy as np
 
 class Bus():
-    def __init__(self, initTime, lapCount, startingPos, name):
+    def __init__(self, initTime, lapCount, startingPos, name,color):
         self._name = name
         self._initTime = initTime
         self._lapCount = lapCount
@@ -10,7 +10,7 @@ class Bus():
         self._position = startingPos
         #self._isActive = isActive
 
-        self._color = list(np.random.choice(range(256), size=3))
+        self._color = color #list(np.random.choice(range(256), size=3))
 
     def getMappedToCircle(self, nodeCount, multiplier, offset):
         angle = self._position / nodeCount * 2 * math.pi
