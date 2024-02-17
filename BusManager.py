@@ -1,13 +1,14 @@
 import math
+from ListaDobleCircular import ListaDobleC
 
 class BusManager():
-    def __init__(self, busses):
+    def __init__(self, busses):    
+        self._busses = busses
         
         #Horas de duracion de la simulacion
         self._initTime = 9
         self._endTime = 12
 
-        self._busses = busses
         self._nodeCount = 6
         self._simulDuration = self._endTime - self._initTime
         self._timeUnit = 1
@@ -38,9 +39,16 @@ class BusManager():
         if self._simulationFinished:
             self._simulationFinished = False
             self._elapsedTime = 0
-            for bus in self._busses:
-                bus._position = bus._startingPos
-            self._simulationActive = True
+            
+        actual = self._busses.inicio
+        while True:
+            bus = actual.dato
+            bus._position = bus._startingPos
+            if(actual == self._busses.ultimo):
+                break 
+            actual = actual.siguiente
+
+        self._simulationActive = True
 
     def SaveInitialPositions(self)->list:
         for bus in self._busses:
@@ -49,7 +57,9 @@ class BusManager():
     def UpdateBussesPos(self, dt):
         self._elapsedTime += dt / self._timeUnit
 
-        for bus in self._busses:
+        actual = self._busses.inicio
+        while True:
+            bus = actual.dato
             #if bus._isActive:
             busSpeed =  ((bus._lapCount * self._nodeCount - bus._startingPos) / 
                          (self._simulDuration * self._timeUnit))  * dt
@@ -57,22 +67,32 @@ class BusManager():
             bus._position += busSpeed
             if(bus._position >= self._nodeCount):
                 bus._position -= self._nodeCount
+
+            if(actual == self._busses.ultimo):
+                break 
+            actual = actual.siguiente
+
     
     def UpdateList(self):
-        for i in range(len(self._busses) - 1):
-            
-            nextIndex = i + 1
-            if i + 1 == len(self._busses):
-                nextIndex = 0
+        actual = self._busses.inicio
+        while (actual != self._busses.ultimo):
+            if(actual.dato._position > actual.siguiente.dato._position):   
+                if(actual == self._busses.inicio):
+                    self._busses.inicio = actual.siguiente
+                
+                temp = actual.siguiente.siguiente
+                
+                actual.siguiente.siguiente.anterior = actual
+                actual.siguiente.siguiente = actual
+                actual.siguiente.anterior = actual.anterior
+                actual.anterior.siguiente = actual.siguiente
+                actual.anterior = actual.siguiente
+                actual.siguiente = temp
 
-            current = self._busses[i]
-            next = self._busses[nextIndex]
-
-            if(current._position > next._position):
-                #self.NotifyPosChange(current, next)
-                temp = current
-                self._busses[i] = self._busses[nextIndex]
-                self._busses[nextIndex] = temp
+                if(actual.anterior == self._busses.ultimo):
+                    self._busses.ultimo = actual
+            else:
+                actual = actual.siguiente
 
     def NotifyPosChange(self, bus1, bus2):
         print("Bus " + bus1._name + " surpassed bus " + bus2._name + " at km: %.2f" % 

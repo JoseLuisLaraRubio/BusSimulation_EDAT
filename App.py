@@ -4,7 +4,10 @@ from Bus import Bus
 from Button import Button
 from BusManager import BusManager
 from DrawManager import DrawManager
+
+
 from FileReader import FileReader
+from ListaDobleCircular import ListaDobleC
 
 # pygame setup
 pygame.init()
@@ -15,19 +18,14 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
-#TEST BUS INFO
-b1 = Bus(initTime = 0, lapCount = 3, startingPos = 2, name = "A")
-b2 = Bus(initTime = 0, lapCount = 5, startingPos = 1, name = "B")
-b3 = Bus(initTime = 0, lapCount = 7, startingPos = 3, name = "C")
-b4 = Bus(initTime = 0, lapCount = 1, startingPos = 3, name = "D")
-b5 = Bus(initTime = 0, lapCount = 4, startingPos = 1, name = "E")
-b6 = Bus(initTime = 0, lapCount = 9, startingPos = 4, name = "F")
-b7 = Bus(initTime = 0, lapCount = 2, startingPos = 5, name = "G")
-b8 = Bus(initTime = 0, lapCount = 8, startingPos = 6, name = "H")
-b9 = Bus(initTime = 0, lapCount = 6, startingPos = 3, name = "I")
-
 #Returns list of buses
-busses = Reader.getData()
+busses = ListaDobleC()
+tempBusses = Reader.getData()
+
+#Insert data into busses
+for bus in tempBusses:
+  busses.inserta_inicio(bus)
+
 
 BM = BusManager(busses = busses)
 DM = DrawManager(BusManager = BM, screen = screen)
