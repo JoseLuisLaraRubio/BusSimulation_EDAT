@@ -38,19 +38,39 @@ class DrawManager():
         return coloredBus
 
     def DrawBussesSimulation(self, busses):
-        for bus in busses:
-
+        actual = busses.inicio
+        while True:
+            bus = actual.dato
             image =  self.GetColoredBus(bus, self._busWidth, self._busHeight)
             
             self._screen.blit(image,
                  bus.getMappedToCircle(self._BusManager._nodeCount, 265,
                  ((self._screen.get_width() - self._busWidth)/ 2, (self._screen.get_height() - self._busHeight)/ 2 )))
 
+            if(actual == busses.ultimo):
+                break
+
+            actual = actual.siguiente
+
     def DrawBussesList(self, busses):
+        MAX_WIDTH = 130
+
         y = 150
-        for bus in busses:
-            self._screen.blit(self.GetColoredBus(bus, 700 / len(busses), (700 * 3) / (len(busses) * 5)), (85, y))
-            y += (700 * 3) / (len(busses) * 5) + 10
+        actual = busses.inicio
+        while True:
+            bus = actual.dato
+            if(700 / busses.len() < MAX_WIDTH):
+                self._screen.blit(self.GetColoredBus(bus, 700 / busses.len(), (700 * 3) / (busses.len() * 5)), (85, y))
+                y += (700 * 3) / (busses.len() * 5) + 10
+            else:
+                self._screen.blit(self.GetColoredBus(bus,MAX_WIDTH, MAX_WIDTH * (3/5)), (85, y))
+                y += MAX_WIDTH * (3/5) + 10
+
+
+            if(actual == busses.ultimo):
+                break
+            
+            actual = actual.siguiente
 
     def DrawClock(self):
         font = pygame.font.Font('freesansbold.ttf', 32)

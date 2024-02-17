@@ -4,6 +4,7 @@ from Bus import Bus
 from Button import Button
 from BusManager import BusManager
 from DrawManager import DrawManager
+from ListaDobleCircular import ListaDobleC
 
 # pygame setup
 pygame.init()
@@ -23,7 +24,10 @@ b7 = Bus(initTime = 0, lapCount = 2, startingPos = 5, name = "G")
 b8 = Bus(initTime = 0, lapCount = 8, startingPos = 6, name = "H")
 b9 = Bus(initTime = 0, lapCount = 6, startingPos = 3, name = "I")
 
-busses = [b1, b2, b3, b4, b5, b6, b7, b8, b9]
+busses = ListaDobleC()
+busses.inserta_inicio(b1)
+busses.inserta_inicio(b2)
+busses.inserta_inicio(b3)
 
 BM = BusManager(busses = busses)
 DM = DrawManager(BusManager = BM, screen = screen)
