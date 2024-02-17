@@ -1,9 +1,15 @@
+import math
+
 class BusManager():
     def __init__(self, busses):
         
+        self._initTime = 9
+        self._endTime = 12
+
+
         self._busses = busses
         self._nodeCount = 6
-        self._simulDuration = 3
+        self._simulDuration = self._endTime - self._initTime
         self._timeUnit = 10
         self._circuitLenght = 10
         self._elapsedTime = 0
@@ -12,8 +18,12 @@ class BusManager():
 
         self._simulationActive = False
 
+    def getTimeInHours(self):
+        return str(math.floor(self._initTime + self._elapsedTime)) + " : " + str(math.floor((self._elapsedTime - math.floor(self._elapsedTime)) * 60))
+
     def LimitSimulationTime(self):
-        if (self._elapsedTime >= self._simulDuration * self._timeUnit):
+        if (self._elapsedTime >= self._simulDuration):
+            self._elapsedTime = self._simulDuration
             self.PauseSimulation()
             self._simulationFinished = True
 
@@ -25,7 +35,7 @@ class BusManager():
         self._simulationActive = False
 
     def UpdateBussesPos(self, dt):
-        self._elapsedTime += dt
+        self._elapsedTime += dt / self._timeUnit
 
         for bus in self._busses:
             #if bus._isActive:

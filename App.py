@@ -28,12 +28,11 @@ busses = [b1, b2, b3, b4, b5, b6, b7, b8, b9]
 BM = BusManager(busses = busses)
 DM = DrawManager(BusManager = BM, screen = screen)
 
-
 playButtonSprite = pygame.image.load("Assets/PlayButton.png")
 pauseButtonSprite = pygame.image.load("Assets/PauseButton.png")
 
 playButton = Button(1070, 310, playButtonSprite, .3, screen)
-pauseButton = Button(1085, 460, pauseButtonSprite, .3, screen)
+pauseButton = Button(1085, 470, pauseButtonSprite, .3, screen)
 
 while running:
     # poll for events
@@ -58,6 +57,9 @@ while running:
     #Draw busses
     DM.DrawBussesSimulation(BM._busses)
     DM.DrawBussesList(BM._busses)
+
+    #Draw Clock
+    DM.DrawClock()
 
     if(BM._simulationActive):
         #Update positions

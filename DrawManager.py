@@ -52,5 +52,15 @@ class DrawManager():
             self._screen.blit(self.GetColoredBus(bus, 700 / len(busses), (700 * 3) / (len(busses) * 5)), (85, y))
             y += (700 * 3) / (len(busses) * 5) + 10
 
+    def DrawClock(self):
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        clockTxt = self._BusManager.getTimeInHours()
+
+        timeBox = self.getImage(pygame.image.load("Assets/TimeBox.png"), 160, 60)
+        text = font.render(clockTxt, True, "green")
+
+        self._screen.blit(timeBox,  (1040, 150))
+        self._screen.blit(text, (1070, 165))
+        
 
         
