@@ -3,14 +3,14 @@ import math
 class BusManager():
     def __init__(self, busses):
         
+        #Horas de duracion de la simulacion
         self._initTime = 9
         self._endTime = 12
-
 
         self._busses = busses
         self._nodeCount = 6
         self._simulDuration = self._endTime - self._initTime
-        self._timeUnit = 10
+        self._timeUnit = 1
         self._circuitLenght = 10
         self._elapsedTime = 0
 
@@ -33,6 +33,18 @@ class BusManager():
     
     def PauseSimulation(self):
         self._simulationActive = False
+
+    def RestartSimulation(self):
+        if self._simulationFinished:
+            self._simulationFinished = False
+            self._elapsedTime = 0
+            for bus in self._busses:
+                bus._position = bus._startingPos
+            self._simulationActive = True
+
+    def SaveInitialPositions(self)->list:
+        for bus in self._busses:
+            self._bussesInitialPosition.append(bus._position)
 
     def UpdateBussesPos(self, dt):
         self._elapsedTime += dt / self._timeUnit
