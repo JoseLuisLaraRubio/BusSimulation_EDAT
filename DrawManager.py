@@ -37,37 +37,37 @@ class DrawManager():
 
         return coloredBus
 
-    def DrawBussesSimulation(self, busses):
-        actual = busses.inicio
+    def DrawBusesSimulation(self, buses):
+        actual = buses.inicio
         while True:
             bus = actual.dato
             image =  self.GetColoredBus(bus, self._busWidth, self._busHeight)
             
             self._screen.blit(image,
-                 bus.getMappedToCircle(self._BusManager._nodeCount, 265,
+                 bus.getMappedToCircle(self._BusManager._circuitLenght, 265,
                  ((self._screen.get_width() - self._busWidth)/ 2, (self._screen.get_height() - self._busHeight)/ 2 )))
 
-            if(actual == busses.ultimo):
+            if(actual == buses.ultimo):
                 break
 
             actual = actual.siguiente
 
-    def DrawBussesList(self, busses):
+    def DrawBusesList(self, buses):
         MAX_WIDTH = 130
 
         y = 150
-        actual = busses.inicio
+        actual = buses.inicio
         while True:
             bus = actual.dato
-            if(700 / busses.len() < MAX_WIDTH):
-                self._screen.blit(self.GetColoredBus(bus, 700 / busses.len(), (700 * 3) / (busses.len() * 5)), (85, y))
-                y += (700 * 3) / (busses.len() * 5) + 10
+            if(700 / buses.len() < MAX_WIDTH):
+                self._screen.blit(self.GetColoredBus(bus, 700 / buses.len(), (700 * 3) / (buses.len() * 5)), (85, y))
+                y += (700 * 3) / (buses.len() * 5) + 10
             else:
                 self._screen.blit(self.GetColoredBus(bus,MAX_WIDTH, MAX_WIDTH * (3/5)), (85, y))
                 y += MAX_WIDTH * (3/5) + 10
 
 
-            if(actual == busses.ultimo):
+            if(actual == buses.ultimo):
                 break
             
             actual = actual.siguiente

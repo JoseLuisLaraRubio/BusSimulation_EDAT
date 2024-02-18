@@ -4,39 +4,39 @@ from Bus import Bus
 from Button import Button
 from BusManager import BusManager
 from DrawManager import DrawManager
+from FileReader import FileReader
 from ListaDobleCircular import ListaDobleC
 
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
+Reader = FileReader("BusesInfo.csv", "Schedule.csv")
 clock = pygame.time.Clock()
 running = True
 dt = 0
 
-#TEST BUS INFO
-b1 = Bus(initTime = 0, lapCount = 3, startingPos = 2, name = "A")
-b2 = Bus(initTime = 0, lapCount = 5, startingPos = 1, name = "B")
-b3 = Bus(initTime = 0, lapCount = 7, startingPos = 3, name = "C")
-b4 = Bus(initTime = 0, lapCount = 1, startingPos = 3, name = "D")
-b5 = Bus(initTime = 0, lapCount = 4, startingPos = 1, name = "E")
-b6 = Bus(initTime = 0, lapCount = 9, startingPos = 4, name = "F")
-b7 = Bus(initTime = 0, lapCount = 2, startingPos = 5, name = "G")
-b8 = Bus(initTime = 0, lapCount = 8, startingPos = 6, name = "H")
-b9 = Bus(initTime = 0, lapCount = 6, startingPos = 3, name = "I")
+#Returns list of buses
+buses = ListaDobleC()
+tempBuses = Reader.getBussesData()[0]
 
-busses = ListaDobleC()
-busses.inserta_inicio(b1)
-busses.inserta_inicio(b2)
-busses.inserta_inicio(b3)
+iTime = Reader.getBussesData()[1]
+eTime = Reader.getBussesData()[2]
 
-BM = BusManager(busses = busses)
+#Insert data into buses
+for bus in tempBuses:
+  buses.inserta_inicio(bus)
+
+BM = BusManager(buses, iTime, eTime)
 DM = DrawManager(BusManager = BM, screen = screen)
+
 
 playButtonSprite = pygame.image.load("Assets/PlayButton.png")
 pauseButtonSprite = pygame.image.load("Assets/PauseButton.png")
+restartButtonSprite = pygame.image.load("Assets/RestartButton.svg")
 
 playButton = Button(1070, 310, playButtonSprite, .3, screen)
 pauseButton = Button(1085, 470, pauseButtonSprite, .3, screen)
+RestartButton = Button(1005, 430, restartButtonSprite, .3, screen)
 
 while running:
     # poll for events
@@ -58,19 +58,23 @@ while running:
     if(pauseButton.draw()):
         BM.PauseSimulation()
 
-    #Draw busses
-    DM.DrawBussesSimulation(BM._busses)
-    DM.DrawBussesList(BM._busses)
+    if(RestartButton.draw()):
+        BM.RestartSimulation()
+
+    #Draw buses
+    DM.DrawBusesSimulation(BM._buses)
+    DM.DrawBusesList(BM._buses)
 
     #Draw Clock
     DM.DrawClock()
 
+    BM.LimitSimulationTime()
     if(BM._simulationActive):
         #Update positions
-        BM.UpdateBussesPos(dt)
+        BM.ActivateAndDeactivateBusses()
+        BM.UpdateBusesPos()
         BM.UpdateList()
 
-    BM.LimitSimulationTime()
     
     # flip() the display to put your work on screen
     pygame.display.flip()
