@@ -4,6 +4,11 @@ Mariana Estefanía González Canul
 Tyrone Julián Johnson Dorantes
 Mauro Arif Kuh Esquivel
 José Luis Lara Rubio
+
+ESTE ES EL ARCHIVO QUE SE DEBE EJECUTAR
+ES NECESARIO TENER LA LIBRERÍA PYGAME INSTALADA
+
+REPOSITORIO: https://github.com/JoseLuisLaraRubio/BusSimulation_EDAT
 """
 
 # Example file showing a circle moving on screen
