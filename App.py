@@ -4,8 +4,6 @@ from Bus import Bus
 from Button import Button
 from BusManager import BusManager
 from DrawManager import DrawManager
-
-
 from FileReader import FileReader
 from ListaDobleCircular import ListaDobleC
 
@@ -70,13 +68,13 @@ while running:
     #Draw Clock
     DM.DrawClock()
 
+    BM.LimitSimulationTime()
     if(BM._simulationActive):
         #Update positions
+        BM.ActivateAndDeactivateBusses()
         BM.UpdateBusesPos()
         BM.UpdateList()
-        BM.ActivateAndDeactivateBusses()
 
-    BM.LimitSimulationTime()
     
     # flip() the display to put your work on screen
     pygame.display.flip()
@@ -84,6 +82,6 @@ while running:
     # limits FPS to 60
     # dt is delta time in seconds since last frame, used for framerate-
     # independent physics.
-    dt = clock.tick(30) / 1000
+    dt = clock.tick(60) / 1000
 
 pygame.quit()

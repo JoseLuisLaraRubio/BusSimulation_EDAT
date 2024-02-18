@@ -15,10 +15,13 @@ class Bus():
         self._speed = 0
         self._currentStop = 0
 
+        self._numberOfUpdates = 0
+        self._theoreticalUpdates = 0
+
     def CheckSchedule(self, elapsedTime):
         if(self._currentStop < len(self._numSchedule)
            and elapsedTime >= self._numSchedule[self._currentStop]):
-
+        
             self._currentStop += 1
             if(self._isActive):
                 self._isActive = False
