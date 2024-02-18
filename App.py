@@ -1,3 +1,11 @@
+"""
+Arturo Cadena Méndez
+Mariana Estefanía González Canul
+Tyrone Julián Johnson Dorantes
+Mauro Arif Kuh Esquivel
+José Luis Lara Rubio
+"""
+
 # Example file showing a circle moving on screen
 import pygame
 from Bus import Bus

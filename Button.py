@@ -1,3 +1,10 @@
+"""
+Arturo Cadena Méndez
+Mariana Estefanía González Canul
+Tyrone Julián Johnson Dorantes
+Mauro Arif Kuh Esquivel
+José Luis Lara Rubio
+"""
 import pygame
 
 class Button():
@@ -15,6 +22,7 @@ class Button():
         self.rect.topleft = (x, y)
         self.clicked = False
 
+    #Display the button instance
     def draw(self):
         action = False
         pos = pygame.mouse.get_pos()

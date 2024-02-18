@@ -1,3 +1,10 @@
+"""
+Arturo Cadena Méndez
+Mariana Estefanía González Canul
+Tyrone Julián Johnson Dorantes
+Mauro Arif Kuh Esquivel
+José Luis Lara Rubio
+"""
 
 from Bus import Bus
 
@@ -11,6 +18,7 @@ class FileReader():
         self.ReadBusInfo()
         self.ReadScheduleInfo()
 
+    #Read BusesInfo.csv to generate the bus instances 
     def ReadBusInfo(self):
         arr = []
         for line in self.busInfo:
@@ -26,8 +34,8 @@ class FileReader():
             
             self.buses.append(Bus(laps,position,name,color))
         
-    def ReadScheduleInfo(self):
-        
+    #Read Schedule.csv and assign the schedule info to the buses
+    def ReadScheduleInfo(self):        
         for line in self.scheduleInfo:
             arr = line.split(",")
             self._iTime = self.TimeToInt(arr[0])
@@ -51,7 +59,8 @@ class FileReader():
 
     def getBussesData(self)->list:
         return self.buses, self._iTime, self._eTime
-
+    
+    #Change the time from the format HH:MM into a integer
     def TimeToInt(self, time):
         arr = time.split(":")
         hour = arr[0]

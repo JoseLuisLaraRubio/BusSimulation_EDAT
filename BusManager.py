@@ -1,5 +1,11 @@
+"""
+Arturo Cadena Méndez
+Mariana Estefanía González Canul
+Tyrone Julián Johnson Dorantes
+Mauro Arif Kuh Esquivel
+José Luis Lara Rubio
+"""
 import math
-
 class BusManager():
     def __init__(self, buses, itime, etime): 
         self._buses = buses
