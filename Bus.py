@@ -1,3 +1,11 @@
+"""
+Arturo Cadena Méndez
+Mariana Estefanía González Canul
+Tyrone Julián Johnson Dorantes
+Mauro Arif Kuh Esquivel
+José Luis Lara Rubio
+"""
+
 import math
 import numpy as np
 
@@ -18,6 +26,7 @@ class Bus():
         self._numberOfUpdates = 0
         self._theoreticalUpdates = 0
 
+    #Check if the bus has to be activated/deactivated according to schedule
     def CheckSchedule(self, elapsedTime):
         if(self._currentStop < len(self._numSchedule)
            and elapsedTime >= self._numSchedule[self._currentStop]):
@@ -28,12 +37,14 @@ class Bus():
             else:
                 self._isActive = True
 
+    #get the possition mapped to a circle to display on screen
     def getMappedToCircle(self, circuitLenght, multiplier, offset):
         angle = self._position / circuitLenght * 2 * math.pi
         x =  math.cos(angle)
         y =  math.sin(angle)
         return x * multiplier + offset[0],  y * multiplier + offset[1]
 
+    #calculate the time the bus will be active during the simulation
     def CalculateActiveTime(self, schedule):
         self._activeTime = 0
         self._schedule = schedule
@@ -53,6 +64,7 @@ class Bus():
             i += 1
         self._activeTime = totalTime
     
+    #Change the time from the format HH:MM into a integer
     def TimeToInt(self, time):
         arr = time.split(":")
         hour = int(arr[0])

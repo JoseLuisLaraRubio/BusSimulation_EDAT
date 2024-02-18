@@ -1,3 +1,11 @@
+"""
+Arturo Cadena Méndez
+Mariana Estefanía González Canul
+Tyrone Julián Johnson Dorantes
+Mauro Arif Kuh Esquivel
+José Luis Lara Rubio
+"""
+
 import pygame
 from Button import Button as btn
 
@@ -12,10 +20,12 @@ class DrawManager():
         self._screen = screen
         self._BusManager = BusManager
 
+    #get a pygame image on a specific size
     def getImage(self, sprite, width, height):
         image = pygame.transform.smoothscale(sprite, (width, height)).convert_alpha()
         return image
 
+    #Display all the static objects on the screen
     def DrawBGObjects(self):
         #Load Sprites
         roadSprite = self.getImage(pygame.image.load("Assets/Road.png"), 650, 650)
@@ -27,7 +37,7 @@ class DrawManager():
         self._screen.blit(listSign, (80, 50))
         self._screen.blit(timeSign, (1055, 50))
         
-
+    #Get a bus image of a specific color
     def GetColoredBus(self, bus, width, height):
         coloredBus =  self.getImage(self._busSprite, width, height)
         colorRect = pygame.Surface(coloredBus.get_size())
@@ -37,6 +47,7 @@ class DrawManager():
 
         return coloredBus
 
+    #Display the busses on the circular road
     def DrawBusesSimulation(self, buses):
         actual = buses.inicio
         while True:
@@ -52,6 +63,7 @@ class DrawManager():
 
             actual = actual.siguiente
 
+    #Display the list of busses on its corresponding order
     def DrawBusesList(self, buses):
         MAX_WIDTH = 130
 
@@ -72,6 +84,7 @@ class DrawManager():
             
             actual = actual.siguiente
 
+    #Display the clock qith the current time on it
     def DrawClock(self):
         font = pygame.font.Font('freesansbold.ttf', 32)
         clockTxt = self._BusManager.getTimeInHours()

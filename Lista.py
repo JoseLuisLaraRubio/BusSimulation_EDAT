@@ -1,4 +1,3 @@
-
 class Lista():
     def __init__(self,nombre='Lista',inicio=None,ultimo=None):
         self._inicio = inicio
