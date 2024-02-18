@@ -2,25 +2,57 @@ import math
 import numpy as np
 
 class Bus():
-    def __init__(self, initTime, lapCount, startingPos, name):
+    def __init__(self, lapCount, startingPos, name, color):        
         self._name = name
-        self._initTime = initTime
+
+        self._isActive = False
+
         self._lapCount = lapCount
         self._startingPos = startingPos
         self._position = startingPos
-        #self._isActive = isActive
+        self._color = color
 
-        self._color = list(np.random.choice(range(256), size=3))
+        self._speed = 0
+        self._currentStop = 0
 
-    def getMappedToCircle(self, nodeCount, multiplier, offset):
-        angle = self._position / nodeCount * 2 * math.pi
+    def CheckSchedule(self, elapsedTime):
+        if(self._currentStop < len(self._numSchedule)
+           and elapsedTime >= self._numSchedule[self._currentStop]):
+
+            self._currentStop += 1
+            if(self._isActive):
+                self._isActive = False
+            else:
+                self._isActive = True
+
+    def getMappedToCircle(self, circuitLenght, multiplier, offset):
+        angle = self._position / circuitLenght * 2 * math.pi
         x =  math.cos(angle)
         y =  math.sin(angle)
         return x * multiplier + offset[0],  y * multiplier + offset[1]
 
-    def getPosInCircuit(self, nodeCount, circuitLength):
-        return (self._position / nodeCount) * circuitLength
+    def CalculateActiveTime(self, schedule):
+        self._activeTime = 0
+        self._schedule = schedule
 
+        self._numSchedule = []
 
+        for time in schedule:
+            self._numSchedule.append(self.TimeToInt(time))
+
+        totalTime = 0
+        i = 0
+        for time in self._numSchedule:  
+            if(i % 2):
+                totalTime += time
+            else:
+                totalTime -= time
+            i += 1
+        self._activeTime = totalTime
     
-
+    def TimeToInt(self, time):
+        arr = time.split(":")
+        hour = int(arr[0])
+        minute = int(arr[1])
+        return hour + minute / 60
+        

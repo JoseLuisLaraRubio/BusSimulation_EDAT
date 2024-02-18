@@ -1,30 +1,67 @@
 import math
-from ListaDobleCircular import ListaDobleC
 
 class BusManager():
-    def __init__(self, busses):    
-        self._busses = busses
+    def __init__(self, buses, itime, etime): 
+        self._buses = buses
         
         #Horas de duracion de la simulacion
-        self._initTime = 9
-        self._endTime = 12
+        self._initTime = itime
+        self._endTime = etime
 
-        self._nodeCount = 6
         self._simulDuration = self._endTime - self._initTime
-        self._timeUnit = 10
+
+        self._nodeCount = 10
         self._circuitLenght = 10
+
+        self._timeUnit = 6
         self._elapsedTime = 0
 
         self._simulationFinished = False
-
         self._simulationActive = False
+
+        self.CorrectStartPos()
+        self.SetBusSpeed()
+
+    def CorrectStartPos(self):
+        actual = self._buses.inicio
+        while True:
+            bus = actual.dato
+            bus._startingPos *= self._circuitLenght / self._nodeCount
+            bus._position = bus._startingPos
+            bus._currentStop = 0
+            if(actual == self._buses.ultimo):
+                break 
+            actual = actual.siguiente
+
+    def SetBusSpeed(self):
+        actual = self._buses.inicio
+        while True:
+            bus = actual.dato
+
+            distance = (bus._lapCount * self._circuitLenght - bus._startingPos)     
+            time = (bus._activeTime * self._timeUnit)    
+            bus._speed = distance / time
+
+            print(time)
+
+            #realDistance = 0
+            #for i in range(time):
+            #    realDistance += bus._speed
+                
+            
+            #print(realDistance)
+
+            if(actual == self._buses.ultimo):
+                break 
+            actual = actual.siguiente
 
     def getTimeInHours(self):
         return str(math.floor(self._initTime + self._elapsedTime)) + " : " + str(math.floor((self._elapsedTime - math.floor(self._elapsedTime)) * 60))
 
     def LimitSimulationTime(self):
         if (self._elapsedTime >= self._simulDuration):
-            self._elapsedTime = self._simulDuration
+            #self._elapsedTime = self._simulDuration
+
             self.PauseSimulation()
             self._simulationFinished = True
 
@@ -37,48 +74,52 @@ class BusManager():
 
     def RestartSimulation(self):
         if self._simulationFinished:
-            self._simulationFinished = False
-            self._elapsedTime = 0
             
-            actual = self._busses.inicio
+            actual = self._buses.inicio
             while True:
                 bus = actual.dato
+                bus._isActive = False
                 bus._position = bus._startingPos
-                if(actual == self._busses.ultimo):
+                bus._currentStop = 0
+                if(actual == self._buses.ultimo):
                     break 
                 actual = actual.siguiente
 
+            self._elapsedTime = 0
+            self._simulationFinished = False
             self._simulationActive = True
 
-    def SaveInitialPositions(self)->list:
-        for bus in self._busses:
-            self._bussesInitialPosition.append(bus._position)
+    def UpdateBusesPos(self):
+        self._elapsedTime += 1 / self._timeUnit
 
-    def UpdateBussesPos(self, dt):
-        self._elapsedTime += dt / self._timeUnit
-
-        actual = self._busses.inicio
+        actual = self._buses.inicio
         while True:
             bus = actual.dato
-            #if bus._isActive:
-            busSpeed =  ((bus._lapCount * self._nodeCount - bus._startingPos) / 
-                         (self._simulDuration * self._timeUnit))  * dt
-            
-            bus._position += busSpeed
-            if(bus._position >= self._nodeCount):
-                bus._position -= self._nodeCount
+            if bus._isActive:
+                bus._position += bus._speed
+                #if(bus._position >= self._circuitLenght):
+                #    bus._position -= self._circuitLenght
 
-            if(actual == self._busses.ultimo):
+            if(actual == self._buses.ultimo):
                 break 
             actual = actual.siguiente
 
-    
+    def ActivateAndDeactivateBusses(self):
+        actual = self._buses.inicio
+        while True:
+            bus = actual.dato
+            bus.CheckSchedule(self._elapsedTime + self._initTime)
+            if(actual == self._buses.ultimo):
+                break 
+            actual = actual.siguiente
+
     def UpdateList(self):
-        actual = self._busses.inicio
-        while (actual != self._busses.ultimo):
+        actual = self._buses.inicio
+        while (actual != self._buses.ultimo):
             if(actual.dato._position > actual.siguiente.dato._position):   
-                if(actual == self._busses.inicio):
-                    self._busses.inicio = actual.siguiente
+                                
+                if(actual == self._buses.inicio):
+                    self._buses.inicio = actual.siguiente
                 
                 temp = actual.siguiente.siguiente
                 
@@ -89,18 +130,14 @@ class BusManager():
                 actual.anterior = actual.siguiente
                 actual.siguiente = temp
 
-                if(actual.anterior == self._busses.ultimo):
-                    self._busses.ultimo = actual
+                if(actual.anterior == self._buses.ultimo):
+                    self._buses.ultimo = actual
             else:
                 actual = actual.siguiente
 
     def NotifyPosChange(self, bus1, bus2):
-        print("Bus " + bus1._name + " surpassed bus " + bus2._name + " at km: %.2f" % 
-              (bus1.getPosInCircuit(self._nodeCount, self._circuitLenght)))
-        
-
-    def ReadBussesinfo():
-        pass
+        print("Bus " + bus1._name + " surpassed bus "
+               + bus2._name + " at km: %.2f" % bus1._position)
 
     def PrintResults():
         pass
